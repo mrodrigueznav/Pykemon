@@ -12,7 +12,7 @@ class Pokemon:
 
     #Regresar a mejorar esto con filter
     def getStats(self, stats):
-        iv = 31
+        iv = [random.randint(1,31),31,31,31,31,31]
         level = 100
         baseStats = {
             'HP': stats[0]['hp'],
@@ -24,49 +24,11 @@ class Pokemon:
         }
 
         stats = {
-            'HP': ((((2*baseStats['HP'])+iv)*level)/100)+level+10,
-            'ATK': ((((2*baseStats['HP'])+iv)*level)/100)+5,
-            'DEF': ((((2*baseStats['HP'])+iv)*level)/100)+5,
-            'SPATK': ((((2*baseStats['HP'])+iv)*level)/100)+5,
-            'SPDEF': ((((2*baseStats['HP'])+iv)*level)/100)+5,
-            'SPD': ((((2*baseStats['HP'])+iv)*level)/100)+5,
+            'HP': ((((2*baseStats['HP'])+iv[0])*level)/100)+level+10,
+            'ATK': ((((2*baseStats['ATK'])+iv[1])*level)/100)+5,
+            'DEF': ((((2*baseStats['DEF'])+iv[2])*level)/100)+5,
+            'SPATK': ((((2*baseStats['SPATK'])+iv[3])*level)/100)+5,
+            'SPDEF': ((((2*baseStats['SPDEF'])+iv[4])*level)/100)+5,
+            'SPD': ((((2*baseStats['SPD'])+iv[5])*level)/100)+5,
         }
         return stats
-
-    def attack(self, targetPokemon):
-        print("Comienzan los putazos")
-        print(f"{self.name}")
-        print("TYPES", self.types)
-        print("ATK", self.stats["ATK"])
-        print("DEF", self.stats["DEF"])
-
-        while (self.health > 0) and (targetPokemon.health > 0):
-            pokemonAttack = selectAttack(self.moves)
-
-            delay_print(f"{self.name} used {self.moves[pokemonAttack]['name']} on {targetPokemon.name} \n")
-            damageModifier = self.damageModifiers(self.moves[pokemonAttack], self, targetPokemon)
-            damageDealt = self.damage(targetPokemon, self.moves[pokemonAttack], damageModifier)
-            targetPokemon.health = targetPokemon.health - damageDealt
-            print(f'{self.name} dealt {damageDealt} damage to {targetPokemon.name}')
-            if (targetPokemon.health <= 0):
-                print(f'{targetPokemon.name} fainted.')
-                print(f'{self.name} wins.')
-                break
-            else:
-                print(f'{targetPokemon.name} health is now {targetPokemon.health}')
-
-            print(f'Go {targetPokemon.name}')
-
-            targetPokemonAttack = selectAttack(targetPokemon.moves)
-            
-            delay_print(f"{targetPokemon.name} used {targetPokemon.moves[targetPokemonAttack]['name']} on {self.name} \n")
-            damageModifier = self.damageModifiers(targetPokemon.moves[pokemonAttack], targetPokemon, self)
-            damageDealt = targetPokemon.damage(self, targetPokemon.moves[targetPokemonAttack], damageModifier)
-            self.current_health = self.current_health - damageDealt
-            print(f'{targetPokemon.name} dealt {damageDealt} damage to {self.name}')
-            if (self.health <= 0):
-                print(f'{self.name} fainted.')
-                print(f'{targetPokemon.name} wins.')
-                break
-            else:
-                print(f'{self.name} health is now {self.health}')

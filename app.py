@@ -1,9 +1,9 @@
 import random #import rng for battle
-import battle
 import requests
 import time
 import sys
 
+from battle import *
 from pokemon import *
 
 def delay_print(string):
@@ -48,24 +48,22 @@ def createPokemon(pokemonJSON):
     data = [pokemonTypes, pokemonMoves, pokemonStats]
     return data
 
-    def selectAttack(moves):
-        validAttack = False
-        selectedAttack = 0
-        while validAttack == False:
-            print('SELECT ONE ATTACK\n')
-            for i, x in enumerate(moves):
-                print(f"{i+1} {x['name']} Power: {x['power']}")
-            attackNo = input('Select a move:')
-            if attackNo not in ['1','2','3','4']:
-                print('Attack must be a number between 1 and 4')
-            else:
-                selectedAttack = int(attackNo) - 1
-                validAttack = True
-        return selectedAttack
+def selectAttack(pokemon):
+    validAttack = False
+    selectedAttack = 0
+    while validAttack == False:
+        print(f'SELECT ONE ATTACK FOR {pokemon.name}\n')
+        for i, x in enumerate(pokemon.moves):
+            print(f"{i+1} {x['name']} Power: {x['power']}")
+        attackNo = input('Select a move:')
+        if attackNo not in ['1','2','3','4']:
+            print('Attack must be a number between 1 and 4')
+        else:
+            selectedAttack = int(attackNo) - 1
+            validAttack = True
+    return pokemon.moves[selectedAttack]
  
 if __name__ == "__main__" :
-    # theApp = App()
-    # theApp.on_execute()
     apiResponseCode = 0
     while apiResponseCode != 200:
         pokemon1 = input('Select a Pokemon: ')
@@ -87,8 +85,17 @@ if __name__ == "__main__" :
     Pokemon1 = Pokemon(jsonPokemon['name'], firstPokemonData[0], firstPokemonData[1], firstPokemonData[2])
     Pokemon2 = Pokemon(secondJsonPokemon['name'], secondPokemonData[0], secondPokemonData[1], secondPokemonData[2])
 
-    # Blastoise = Pokemon('Blastoise',
-    # ['Water'], ['Scald', 'Rapid Spin', 'Ice Beam', 'Toxic'],
-    # {'HP': 299, 'ATK': 181, 'DEF': 259, 'SPATK': 206, 'SPDEF': 246, 'SPD': 192})
-    # battle.start(Pokemon1, Pokemon2)
-    Pokemon1.attack(Pokemon2)
+    # Pokemon1.attack(Pokemon2)
+    battle = Battle(Pokemon1, Pokemon2)
+
+    while not battle.is_finished():
+        # command1 = selectAttack(Pokemon1)
+        # command2 = selectAttack(Pokemon2)
+
+        turn = Turn()
+        turn.command1 = selectAttack(Pokemon1)
+        turn.command2 = selectAttack(Pokemon2)
+
+        if turn.can_start():
+            battle.manage_turn(turn)
+            battle.print_battle_status()
