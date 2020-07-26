@@ -9,6 +9,7 @@ class Pokemon:
         self.moves = moves
         self.stats = self.getStats(stats)
         self.current_health = self.stats['HP']
+        self.nature = 'blabla'
 
     #Regresar a mejorar esto con filter
     def getStats(self, stats):
