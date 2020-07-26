@@ -76,7 +76,7 @@ if __name__ == "__main__" :
 
     rn = random.randint(1,907)
     # getSecondPokemon = requests.get(f'https://pokeapi.co/api/v2/pokemon/{rn}')
-    getSecondPokemon = requests.get(f'https://pokeapi.co/api/v2/pokemon/3')
+    getSecondPokemon = requests.get(f'https://pokeapi.co/api/v2/pokemon/poliwag')
     secondJsonPokemon = getSecondPokemon.json()
 
     firstPokemonData = createPokemon(jsonPokemon)

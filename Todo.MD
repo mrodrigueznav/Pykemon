@@ -7,8 +7,13 @@ x Todos los stats y movimientos del Pokemon
 
 Battle
 x Manejo de turnos
+- Prioridad de ataque
 x Calculo del dano
 - Status
-- Weather
+x Weather
+x Dano de final de turno de weather
 - Trainers
+- Efectos secundarios de Weather que no es dano
 
+Otras Cosas
+x Sandstorm y los climas duracion
