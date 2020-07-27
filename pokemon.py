@@ -1,6 +1,4 @@
 import random
-from constants import *
-from app import delay_print
 
 class Pokemon:
     def __init__(self, name, types, moves, stats):
@@ -9,7 +7,7 @@ class Pokemon:
         self.moves = moves
         self.stats = self.getStats(stats)
         self.current_health = self.stats['HP']
-        self.nature = 'blabla'
+        self.nature = ''
 
     #Regresar a mejorar esto con filter
     def getStats(self, stats):
