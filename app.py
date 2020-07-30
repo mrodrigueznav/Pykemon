@@ -75,8 +75,8 @@ if __name__ == "__main__" :
     jsonPokemon = getPokemon.json()
 
     rn = random.randint(1,907)
-    # getSecondPokemon = requests.get(f'https://pokeapi.co/api/v2/pokemon/{rn}')
-    getSecondPokemon = requests.get(f'https://pokeapi.co/api/v2/pokemon/poliwag')
+    getSecondPokemon = requests.get(f'https://pokeapi.co/api/v2/pokemon/{rn}')
+    # getSecondPokemon = requests.get(f'https://pokeapi.co/api/v2/pokemon/poliwag')
     secondJsonPokemon = getSecondPokemon.json()
 
     firstPokemonData = createPokemon(jsonPokemon)
@@ -89,8 +89,6 @@ if __name__ == "__main__" :
     battle = Battle(Pokemon1, Pokemon2)
 
     while not battle.is_finished():
-        # command1 = selectAttack(Pokemon1)
-        # command2 = selectAttack(Pokemon2)
 
         turn = Turn()
         turn.command1 = selectAttack(Pokemon1)

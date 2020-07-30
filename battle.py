@@ -5,6 +5,9 @@ class Battle:
     def __init__(self, pokemon1, pokemon2):
         self.pokemon1 = pokemon1
         self.pokemon2 = pokemon2
+        # self.trainer1 = [p1,p2]
+        # self.trainer1 = [p1,p2]
+        self.inBattle = [trainer1: [trainer1[0], trainer[2]], trainer2: [trainer2[1], trainer[2]]]
         self.current_weather = None
         self.current_weather_turn_left = 0
         self.actual_turn = 0
@@ -26,16 +29,43 @@ class Battle:
     def manage_turn(self, turn):
         command1 = turn.command1
         command2 = turn.command2
-        print(f"{self.pokemon1.name} used {command1['name']}")
-        self.pokemon2.current_health -= self.damage_calculation(self.pokemon1, self.pokemon2, command1)
-        self.is_finished()
-        print(f"{self.pokemon2.name} used {command2['name']}")
-        self.pokemon1.current_health -= self.damage_calculation(self.pokemon2, self.pokemon1, command2)
-        self.is_finished()
+
+        pokemon_moves_first = self.check_priority()
+
+        self.begin_attacks(self.pokemon1, self.pokemon2, command1, command2)
+
+        # print(f"{self.pokemon1.name} used {command1['name']}")
+        # self.pokemon2.current_health -= self.damage_calculation(self.pokemon1, self.pokemon2, command1)
+        # self.is_finished()
+
+        # print(f"{self.pokemon2.name} used {command2['name']}")
+        # self.pokemon1.current_health -= self.damage_calculation(self.pokemon2, self.pokemon1, command2)
+        # self.is_finished()
+
         self.endTurnDamage(self.pokemon1)
         self.endTurnDamage(self.pokemon2)
+
         self.actual_turn += 1
+
         self.current_weather_turn_left = self.manage_weather_turnleft(self.current_weather_turn_left)
+
+    def begin_attacks(self, pokemon1, pokemon2, command1, command2):
+        lista_pokemones = [(pokemon1,command1), (pokemon2, command2)]
+
+        for pokemon in sorted(lista_pokemones,key=lambda x: x[0].stats['SPD'], reverse=True):
+            print(f"{pokemon[0].name} used {pokemon[1]['name']}")
+            self.pokemon[0].current_health -= self.damage_calculation(pokemon[0], pokemon[1], pokemon[1])
+            self.is_finished()
+        pass
+
+    def check_priority(self):
+        #arroja el orden de movimiento en cada turno
+        # 1 si pokemon 1 mueve primero
+        # 2 si pokemon 2 mueve segundo
+        pokemon_to_attack = 1
+        if self.pokemon2.stats['SPD'] > self.pokemon1.stats['SPD']:
+            pokemon_to_attack = 2
+        return pokemon_to_attack
 
     def manage_weather_turnleft(self, current_weather_turn_left):
         if current_weather_turn_left > 0:
@@ -47,7 +77,6 @@ class Battle:
     def print_battle_status(self):
         print(f"{self.pokemon1.name} has {self.pokemon1.current_health} left!")
         print(f"{self.pokemon2.name} has {self.pokemon2.current_health} left!")
-
 
     def damage_calculation(self, attackingPokemon, targetPokemon, move):
         if move['power'] == None:
@@ -66,6 +95,9 @@ class Battle:
 
     def endTurnDamage(self, pokemon):
         damage = 0
+        if self.current_weather == None:
+            return damage
+
         WEATHER_EFFECTS = {
             'hail': [['ice'], .0625],
             'sandstorm': [['ground', 'rock', 'steel'], .0625]
@@ -85,7 +117,6 @@ class Battle:
         elif    (self.current_weather == 'harsh-sunlight' and move['type'] == 'water') | \
                 (self.current_weather == 'rain' and move['type'] == 'fire') :
                 weather = .5
-        print(f'current weather: {self.current_weather}, weather: {weather}')
         critical = 1
         if random.random() <= 1/24:
             print('Landed a critical attack')

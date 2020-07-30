@@ -41,6 +41,7 @@ TYPES_CHART =[
     ]
 
 WEATHER_MOVES = {
+    ""
     "sunny-day": ["harsh-sunlight", "The sunlight turned harsh!"],
     "rain-dance": ["rain", "It started to rain!"],
     "sandstorm": ["sandstorm", "A sandstorm brewed!"],
